@@ -20,9 +20,8 @@ class CreateClientsTable extends Migration
             $table->string('nombre_comercial', 50)->nullable();
             $table->string('direccion', 150);
             $table->string('codigo_postal', 10)->nullable();
-            $table->string('poblacion', 50)->nullable();
             $table->string('provincia', 50)->nullable();
-            $table->string('pais', 50)->nullable();
+            $table->string('municipio', 50)->nullable();
             $table->string('telefono', 50)->nullable();
             $table->string('fax', 50)->nullable();
             $table->string('movil', 50)->nullable();

@@ -289,7 +289,7 @@
             });
         })
 
-        $(document).ready(function () {
+            $(document).ready(function () {
             $('.ui.form input').prop('disabled', true);;
             let y = window.innerHeight;
             var table = $('#tablaClientes').DataTable({
