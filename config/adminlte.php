@@ -30,9 +30,9 @@ return [
     |
     */
 
-    'logo' => '<img src="img/icon.png" style="width: 32px; height: 32px"> Jerelanz S.L.',
+    'logo' => '<img src="/img/icon.png" style="width: 32px; height: 32px"> Jerelanz S.L.',
 
-    'logo_mini' => '<img src="img/icon.png" style="width: 32px; height: 32px"> ',
+    'logo_mini' => '<img src="/img/icon.png" style="width: 32px; height: 32px"> ',
 
     /*
     |--------------------------------------------------------------------------

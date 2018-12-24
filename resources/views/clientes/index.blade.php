@@ -15,6 +15,7 @@
         .modal {
             margin: 60px auto !important;
         }
+
     </style>
 @stop
 @section('title', 'AdminLTE')
@@ -26,13 +27,15 @@
 @section('content')
     <div class="box box-primary">
         <div class="box-header">
+            <span title="Campos a mostar" data-toggle="tooltip">
             <button class="btn-sm btn-primary" data-toggle="collapse" href="#collapseCampos">
                 <i class="eye icon big"></i>
             </button>
-            <button class="btn-sm btn-warning">
+            </span>
+            <button data-toggle="tooltip" title="Imprimir listado" class="btn-sm btn-warning">
                 <i class="print icon big"></i>
             </button>
-            <button class="btn-sm btn-success">
+            <button data-toggle="tooltip" title="Añadir nuevo cliente" class="btn-sm btn-success">
                 <i class="icons big">
                     <i class="user icon "></i>
                     <i class="corner add icon black"></i>
@@ -126,8 +129,9 @@
         <div class="container">
             <div id="modal_proveedor" class="ui modal">
                 <div class="header"><i class="blue user icon"></i>&nbsp;<span id="titulo">Clientes</span><i
-                            class="close icon"></i>
+                        class="close icon"></i>
                 </div>
+
                 <div class="scrolling content">
                     <div class="ui segment">
                         <div id="clientes_tab" class="ui top attached tabular menu">
@@ -238,6 +242,23 @@
                             </div>
                         </div>
                     </div>
+                    <div class="ui one column stackable center aligned page grid">
+                        <div class="column twelve wide">
+                            <button class="btn-sm btn-warning">
+                                <i class="print icon big"></i>
+                            </button>
+                            <button class="btn-sm btn-primary">
+                                <i class="pencil icon big"></i>
+                            </button>
+                            <button class="btn-sm btn-success">
+                                <i class="check icon big"></i>
+                            </button>
+                            <button class="btn-sm btn-danger">
+                                <i class="trash icon big"></i>
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -254,7 +275,7 @@
             $('#contacto').val(cliente.contacto);
             $('#identificacion_fiscal').val(cliente.identificacion_fiscal);
             $('#direccion').val(cliente.direccion);
-            $('#municipio').val(cliente.poblacion);
+            $('#municipio').val(cliente.municipio);
             $('#cp').val(cliente.codigo_postal);
             $('#provincia').val(cliente.provincia);
             $('#telefono').val(cliente.telefono);
@@ -271,7 +292,7 @@
             $('.ui.modal').modal({transition: 'vertical flip'}).modal('show');
         }
 
-        $('i.close').on('click',()=>{
+        $('i.close').on('click', () => {
             $('.ui.modal')
                 .modal('hide')
             ;
@@ -281,16 +302,18 @@
             clienteId = $(this).attr('data-id');
 
             $.ajax({
-                type:"GET",
-                url:"{{url('clients')}}/"+clienteId,
-                success: function(cliente) {
+                type: "GET",
+                url: "{{url('clients')}}/" + clienteId,
+                success: function (cliente) {
                     abrirModal(cliente)
                 }
             });
         })
 
-            $(document).ready(function () {
-            $('.ui.form input').prop('disabled', true);;
+        $(document).ready(function () {
+
+            $('.ui.form input').prop('readonly', true);
+
             let y = window.innerHeight;
             var table = $('#tablaClientes').DataTable({
                 scrollY: y / 2,
