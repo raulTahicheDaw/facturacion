@@ -102,7 +102,8 @@
                                     <label>Precio:</label>
                                     <input class="field" id="precio" name="precio" type="text" value=""
                                            placeholder="Precio">
-                                </div>                            </div>
+                                </div>
+                            </div>
                             <div class="fields">
                                 <div class="sixteen wide field">
                                     <label>Descripción:</label>
@@ -115,16 +116,16 @@
                 </div>
                 <div class="ui one column stackable center aligned page grid">
                     <div class="column twelve wide">
-                        <button class="btn-sm btn-warning">
+                        <button id="imprimir" class="btn-sm btn-warning">
                             <i class="print icon big"></i>
                         </button>
-                        <button class="btn-sm btn-primary">
+                        <button id="editar" class="btn-sm btn-primary">
                             <i class="pencil icon big"></i>
                         </button>
-                        <button class="btn-sm btn-success">
+                        <button id="actualizar" hidden class="btn-sm btn-success">
                             <i class="check icon big"></i>
                         </button>
-                        <button class="btn-sm btn-danger">
+                        <button id="borrar" class="btn-sm btn-danger">
                             <i class="trash icon big"></i>
                         </button>
                     </div>
@@ -162,8 +163,9 @@
 
         $(document).ready(function () {
 
-            $('.ui.form input').prop('readonly', true);
-
+            $('#actualizar').on('click', () => {
+                modal_lectura();
+            })
             let y = window.innerHeight;
             var table = $('#tablaTarifas').DataTable({
                 scrollY: y / 2,
@@ -184,9 +186,10 @@
                 column.visible(!column.visible());
             });
 
-            $('#nuevaTarifa').click(()=>{
+            $('#nuevaTarifa').click(() => {
                 return window.location.href = '{{route("rates.create")}}'
             })
+
         });
     </script>
 

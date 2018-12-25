@@ -16,6 +16,7 @@
             margin: 60px auto !important;
         }
 
+
     </style>
 @stop
 @section('title', 'AdminLTE')
@@ -32,7 +33,7 @@
                 <i class="eye icon big"></i>
             </button>
             </span>
-            <button data-toggle="tooltip" title="Imprimir listado" class="btn-sm btn-warning">
+            <button id="imprimirListado" data-toggle="tooltip" title="Imprimir listado" class="btn-sm btn-warning">
                 <i class="print icon big"></i>
             </button>
             <button id="nuevoCliente" data-toggle="tooltip" title="Añadir nuevo cliente" class="btn-sm btn-success">
@@ -142,21 +143,27 @@
                             <div class="ui form">
                                 <div class="fields">
                                     <input id="id" type="hidden" value="">
-                                    <div class="seven wide field">
-                                        <label>Nombre:</label>
-                                        <input class="field" id="nombre" name="nombre" type="text" value=""
-                                               placeholder="Nombre">
-                                    </div>
-                                    <div class="six wide field">
-                                        <label>Contacto</label>
-                                        <input id="contacto" name="contacto" type="text" value=""
-                                               placeholder="Persona de contacto">
-                                    </div>
                                     <div class="three wide field">
                                         <label>CIF/NIF:</label>
                                         <input id="identificacion_fiscal" name="identificacion_fiscal" type="text"
                                                value=""
                                                placeholder="CIF/NIF">
+                                    </div>
+                                    <div class="six wide field">
+                                        <label>Nombre:</label>
+                                        <input class="field" id="nombre" name="nombre" type="text" value=""
+                                               placeholder="Nombre">
+                                    </div>
+                                    <div class="six wide field">
+                                        <label>Nombre comercial:</label>
+                                        <input class="field" id="nombre_comercial" name="nombre_comercial" type="text"
+                                               value=""
+                                               placeholder="Nombre comercial">
+                                    </div>
+                                    <div class="three wide field">
+                                        <label>Contacto</label>
+                                        <input id="contacto" name="contacto" type="text" value=""
+                                               placeholder="Persona de contacto">
                                     </div>
                                 </div>
                                 <div class="fields">
@@ -170,14 +177,14 @@
                                         <input id="municipio" name="municipio" type="text" value=""
                                                placeholder="Municipio">
                                     </div>
-                                    <div class="two wide field">
-                                        <label>C.P.:</label>
-                                        <input id="cp" name="cp" type="text" value="" placeholder="Código postal">
-                                    </div>
                                     <div class="four wide field">
                                         <label>Provincia:</label>
                                         <input id="provincia" name="provincia" type="text" value=""
                                                placeholder="Provincia">
+                                    </div>
+                                    <div class="two wide field">
+                                        <label>C.P.:</label>
+                                        <input id="cp" name="cp" type="text" value="" placeholder="Código postal">
                                     </div>
                                 </div>
                                 <div class="fields">
@@ -243,17 +250,17 @@
                         </div>
                     </div>
                     <div class="ui one column stackable center aligned page grid">
-                        <div class="column twelve wide">
+                        <div id="imprimir" class="column twelve wide">
                             <button class="btn-sm btn-warning">
                                 <i class="print icon big"></i>
                             </button>
-                            <button class="btn-sm btn-primary">
+                            <button id="editar" class="btn-sm btn-primary">
                                 <i class="pencil icon big"></i>
                             </button>
-                            <button class="btn-sm btn-success">
+                            <button id="actualizar" hidden class="btn-sm btn-success">
                                 <i class="check icon big"></i>
                             </button>
-                            <button class="btn-sm btn-danger">
+                            <button id="borrar" class="btn-sm btn-danger">
                                 <i class="trash icon big"></i>
                             </button>
                         </div>
@@ -271,7 +278,9 @@
         $("#clientes_tab .item").tab();
 
         function abrirModal(cliente) {
+            $('#id').val(cliente.id);
             $('#nombre').val(cliente.nombre);
+            $('#nombre_comercial').val(cliente.nombre_comercial);
             $('#contacto').val(cliente.contacto);
             $('#identificacion_fiscal').val(cliente.identificacion_fiscal);
             $('#direccion').val(cliente.direccion);
@@ -292,6 +301,80 @@
             $('.ui.modal').modal({transition: 'vertical flip'}).modal('show');
         }
 
+        $('#actualizar').on('click', () => {
+
+            var id = $('#id').val();
+            var nombre = $('#nombre').val();
+            var nombre_comercial = $('#nombre_comercial').val();
+            var contacto = $('#contacto').val();
+            var identificacion_fiscal = $('#identificacion_fiscal').val();
+            var direccion = $('#direccion').val();
+            var municipio = $('#municipio').val();
+            var codigo_postal = $('#cp').val();
+            var provincia = $('#provincia').val();
+            var telefono = $('#telefono').val();
+            var movil = $('#movil').val();
+            var fax = $('#fax').val();
+            var email = $('#email').val();
+            var web = $('#web').val();
+            var banco = $('#banco').val();
+            var iban = $('#iban').val();
+            var observaciones = $('#observaciones').val();
+
+            $.ajax({
+                url: "{{url('/clients')}}/" + id,
+                method: "POST",
+                data: {
+                    _method: "PATCH",
+                    nombre: nombre,
+                    nombre_comercial: nombre_comercial,
+                    contacto: contacto,
+                    identificacion_fiscal: identificacion_fiscal,
+                    direccion: direccion,
+                    municipio: municipio,
+                    codigo_postal: codigo_postal,
+                    provincia: provincia,
+                    telefono: telefono,
+                    movil: movil,
+                    fax: fax,
+                    email: email,
+                    web: web,
+                    banco: banco,
+                    iban: iban,
+                    observaciones: observaciones,
+                },
+                success: function (e) {
+                    if (e.success === 'Sin cambios') {
+                        iziToast.info({
+                            icon: 'icon-person',
+                            position: "topRight",
+                            title: 'Cliente',
+                            message: 'No ha realizado ningún cambio',
+                        });
+                    } else {
+                        iziToast.success({
+                            icon: 'icon-person',
+                            position: "topRight",
+                            title: 'Cliente',
+                            message: e.success,
+                        });
+                    }
+                }, error: function (e) {
+                    let errors = e.responseJSON.errors;
+                    for (let i = 0; i < Object.keys(errors).length; i++) {
+                        $('#' + Object.keys(errors)[i]).addClass('rojo');
+                    }
+                    iziToast.warning({
+                        icon: 'fa fa-exclamation-triangle',
+                        timeout: 1000,
+                        animateInside: true,
+                        position: 'topRight',
+                        message: [Object.values(errors)[0][0]],
+                    });
+                }
+            });
+            modal_lectura();
+        })
 
         $('#tablaClientes tr').on('click', function () {
             clienteId = $(this).attr('data-id');
@@ -306,6 +389,10 @@
         })
 
         $(document).ready(function () {
+
+            $('#actualizar').on('click', () => {
+                modal_lectura();
+            })
 
             let y = window.innerHeight;
             var table = $('#tablaClientes').DataTable({
@@ -332,7 +419,7 @@
                 column.visible(!column.visible());
             });
 
-            $('#nuevoCliente').click(()=>{
+            $('#nuevoCliente').click(() => {
                 return window.location.href = '{{route("clients.create")}}'
             })
 

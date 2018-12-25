@@ -23,6 +23,10 @@
         border-top-color: #3C8DBC;
         font-size: medium;
     }
+
+    .editable{
+        border: 1px dotted green !important;
+    }
 </style>
 @section('adminlte_css')
     <link rel="stylesheet"
@@ -162,7 +166,7 @@
     <script>
 
         //Animación ajax
-       $(document).ajaxStart(function () {
+        $(document).ajaxStart(function () {
             $('#loading').show();
             setTimeout(() => {
                 $('#loading').hide();
@@ -182,8 +186,41 @@
         })
 
         //Modal solo lectura
-        $('#modal .ui.form input').prop('readonly', true);
-        $('#modal .ui.form textarea').prop('readonly', true);
+
+        function modal_lectura(){
+            $('#modal .ui.form input').attr('readonly', 'readonly');
+            $('#modal .ui.form textarea').attr('readonly', 'readonly');
+            $('.editable').attr('readonly', 'readonly');
+            $('.ui.form input').removeClass('editable');
+            $('.ui.form textarea').removeClass('editable');
+            $('#editar').removeAttr('hidden');
+            $('#actualizar').attr('hidden', 'hidden');
+        }
+
+        modal_lectura();
+
+
+        //Modal editable
+
+        function editable() {
+            $('#actualizar').removeAttr('hidden');
+            $('#editar').attr('hidden', 'hidden');
+            $('.ui.form input').removeAttr('readonly');
+            $('.ui.form textarea').removeAttr('readonly');
+            $('.ui.form input').addClass('editable');
+            $('.ui.form textarea').addClass('editable');
+            $('#id').attr('readonly', 'readonly');
+            $('#id').removeClass('editable');
+            $('#updated_at').attr('readonly', 'readonly');
+            $('#updated_at').removeClass('editable');
+            $('#created_at').attr('readonly', 'readonly');
+            $('#created_at').removeClass('editable');
+        }
+
+        $('#editar').on('click', function () {
+            editable();
+        })
+
 
         //Traducción Datatable
 

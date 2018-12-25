@@ -108,16 +108,16 @@
                 </div>
                 <div class="ui one column stackable center aligned page grid">
                     <div class="column twelve wide">
-                        <button class="btn-sm btn-warning">
+                        <button id="imprimir" class="btn-sm btn-warning">
                             <i class="print icon big"></i>
                         </button>
-                        <button class="btn-sm btn-primary">
+                        <button id="editar" class="btn-sm btn-primary">
                             <i class="pencil icon big"></i>
                         </button>
-                        <button class="btn-sm btn-success">
+                        <button id="actualizar" hidden class="btn-sm btn-success">
                             <i class="check icon big"></i>
                         </button>
-                        <button class="btn-sm btn-danger">
+                        <button id="borrar" class="btn-sm btn-danger">
                             <i class="trash icon big"></i>
                         </button>
                     </div>
@@ -154,7 +154,9 @@
 
         $(document).ready(function () {
 
-            $('.ui.form input').prop('readonly', true);
+            $('#actualizar').on('click', ()=>{
+                modal_lectura();
+            })
 
             let y = window.innerHeight;
             var table = $('#tablaCategorias').DataTable({

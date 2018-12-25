@@ -42,7 +42,7 @@
                                 <textarea id="descripcion" name="descripcion"
                                           rows="15"
                                           {{old('descripcion')}}
-                                          maxlength="1000"
+                                          maxlength="500"
                                           placeholder="Descripción de la Categoría  "
                                           style="resize: none;"></textarea>
                             </div>
@@ -112,6 +112,7 @@
                     }
                 });
             });
+
 
             $("#reset").click(function (e) {
                 e.preventDefault();

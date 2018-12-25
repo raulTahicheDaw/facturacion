@@ -48,7 +48,7 @@
                                 <textarea id="descripcion" name="descripcion"
                                           rows="15"
                                           {{old('descripcion')}}
-                                          maxlength="1000"
+                                          maxlength="500"
                                           placeholder="Descripción de la Tarifa  "
                                           style="resize: none;"></textarea>
                             </div>

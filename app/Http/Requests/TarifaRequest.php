@@ -25,8 +25,9 @@ class TarifaRequest extends FormRequest
     {
         return [
             'nombre' => 'required|max:50',
+            'descripcion' => 'string|max:500',
             'precio_hora' => "required|regex:/^\d*(\.\d{1,2})?$/",
-            'descripción' => 'max:500'
+
         ];
     }
 
