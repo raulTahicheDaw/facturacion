@@ -35,7 +35,7 @@
             <button data-toggle="tooltip" title="Imprimir listado" class="btn-sm btn-warning">
                 <i class="print icon big"></i>
             </button>
-            <button data-toggle="tooltip" title="Añadir nuevo cliente" class="btn-sm btn-success">
+            <button id="nuevoCliente" data-toggle="tooltip" title="Añadir nuevo cliente" class="btn-sm btn-success">
                 <i class="icons big">
                     <i class="user icon "></i>
                     <i class="corner add icon black"></i>
@@ -127,7 +127,7 @@
     <!-- Modal -->
     <div id="modal">
         <div class="container">
-            <div id="modal_proveedor" class="ui modal">
+            <div id="modal_cliente" class="ui modal">
                 <div class="header"><i class="blue user icon"></i>&nbsp;<span id="titulo">Clientes</span><i
                         class="close icon"></i>
                 </div>
@@ -292,11 +292,6 @@
             $('.ui.modal').modal({transition: 'vertical flip'}).modal('show');
         }
 
-        $('i.close').on('click', () => {
-            $('.ui.modal')
-                .modal('hide')
-            ;
-        })
 
         $('#tablaClientes tr').on('click', function () {
             clienteId = $(this).attr('data-id');
@@ -312,8 +307,6 @@
 
         $(document).ready(function () {
 
-            $('.ui.form input').prop('readonly', true);
-
             let y = window.innerHeight;
             var table = $('#tablaClientes').DataTable({
                 scrollY: y / 2,
@@ -328,52 +321,7 @@
                     {"orderable": false, "visible": false},
                     {"orderable": false, "visible": true},
                 ],
-                "language": {
-                    "decimal": ",",
-                    "thousands": ".",
-                    "info": "Mostrando clientes del _START_ al _END_ de un total de _TOTAL_ clientes",
-                    "infoEmpty": "Mostrando clientes del 0 al 0 de un total de 0 clientes",
-                    "infoPostFix": "",
-                    "infoFiltered": "(filtrado de un total de _MAX_ clientes)",
-                    "loadingRecords": "Cargando...",
-                    "lengthMenu": "Mostrar _MENU_ clientes",
-                    "paginate": {
-                        "first": "Primero",
-                        "last": "Último",
-                        "next": "Siguiente",
-                        "previous": "Anterior"
-                    },
-                    "processing": "Procesando...",
-                    "search": "Buscar:",
-                    "searchPlaceholder": "A buscar...",
-                    "zeroRecords": "No se encontraron resultados",
-                    "emptyTable": "Ningún dato disponible en esta tabla",
-                    "aria": {
-                        "sortAscending": ": Activar para ordenar la columna de manera ascendente",
-                        "sortDescending": ": Activar para ordenar la columna de manera descendente"
-                    },
-                    //only works for built-in buttons, not for custom buttons
-                    "buttons": {
-                        "create": "Nuevo",
-                        "edit": "Cambiar",
-                        "remove": "Borrar",
-                        "copy": "Copiar",
-                        "csv": "fichero CSV",
-                        "excel": "tabla Excel",
-                        "pdf": "documento PDF",
-                        "print": "Imprimir",
-                        "colvis": "Visibilidad columnas",
-                        "collection": "Colección",
-                        "upload": "Seleccione fichero...."
-                    },
-                    "select": {
-                        "rows": {
-                            _: '%d filas seleccionadas',
-                            0: 'clic fila para seleccionar',
-                            1: 'una fila seleccionada'
-                        }
-                    }
-                }
+                "language": language
             });
 
             $('input.camposToggle').on('change', function (e) {
@@ -383,6 +331,10 @@
                 // Toggle the visibility
                 column.visible(!column.visible());
             });
+
+            $('#nuevoCliente').click(()=>{
+                return window.location.href = '{{route("clients.create")}}'
+            })
 
         });
     </script>

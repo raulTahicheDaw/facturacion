@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Client;
-use App\Http\Requests\ClienteRequest;
+use App\Http\Requests\TarifaRequest;
+use App\Rate;
 use Illuminate\Http\Request;
 
-class ClientController extends Controller
+class RateController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +15,8 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $clientes = Client::all();
-        return view('clientes.index', compact('clientes'));
+        $tarifas = Rate::all();
+        return view('tarifas.index', compact('tarifas'));
     }
 
     /**
@@ -26,43 +26,40 @@ class ClientController extends Controller
      */
     public function create()
     {
-        return view('clientes.create');
+        return view('tarifas.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ClienteRequest $request)
+    public function store(TarifaRequest $request)
     {
         $data = $request->validated();
-        Client::create($data);
-        return response()->json(['success' => 'Cliente guardado correctamente']);
-
+        Rate::create($data);
+        return response()->json(['success' => 'Tarifa guardada correctamente']);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Client $client
+     * @param  \App\Rate  $rate
      * @return \Illuminate\Http\Response
      */
-    public
-    function show(Client $client)
+    public function show(Rate $rate)
     {
-        return $client;
+        return $rate;
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Client $client
+     * @param  \App\Rate  $rate
      * @return \Illuminate\Http\Response
      */
-    public
-    function edit(Client $client)
+    public function edit(Rate $rate)
     {
         //
     }
@@ -70,12 +67,11 @@ class ClientController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\Client $client
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Rate  $rate
      * @return \Illuminate\Http\Response
      */
-    public
-    function update(Request $request, Client $client)
+    public function update(Request $request, Rate $rate)
     {
         //
     }
@@ -83,11 +79,10 @@ class ClientController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Client $client
+     * @param  \App\Rate  $rate
      * @return \Illuminate\Http\Response
      */
-    public
-    function destroy(Client $client)
+    public function destroy(Rate $rate)
     {
         //
     }

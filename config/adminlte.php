@@ -112,19 +112,28 @@ return [
         [
             'text' => 'Clientes',
             'icon' => 'users',
+            'url' => 'clients'
+        ],
+        [
+            'text' => 'Configuración',
+            'icon' => 'gears',
             'submenu' => [
                 [
-                    'text' => 'Listado',
-                    'icon' => 'list-alt',
-                    'url' => 'clients'
+                    'text' => 'Servicios',
+                    'icon' => 'home'
                 ],
+
                 [
-                    'text'=> 'Nuevo cliente',
-                    'icon' => 'user-plus',
-                    'url' => 'clients/create'
-                ]
+                    'text' => 'Categoría de servicios',
+                    'icon' => 'list-alt',
+                    'url' => 'service-categories'
+                ], [
+                    'text' => 'Tarifas',
+                    'icon' => 'eur',
+                    'url' => 'rates'
+                ],
             ]
-        ],
+        ]
     ],
 
     /*
@@ -160,7 +169,7 @@ return [
 
     'plugins' => [
         'datatables' => true,
-        'select2'    => true,
-        'chartjs'    => true,
+        'select2' => true,
+        'chartjs' => true,
     ],
 ];
