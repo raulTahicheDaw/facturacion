@@ -23,4 +23,8 @@ Route::resource('clients', 'ClientController');
 
 Route::resource('service-categories', 'ServiceCategoryController');
 
+Route::resource('taxes', 'TaxesController');
+
 Route::resource('rates', 'RateController');
+
+

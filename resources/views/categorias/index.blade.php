@@ -131,12 +131,62 @@
 @stop
 @section('js')
     <script>
+        var categoriaId;
+
         function abrirModal(categoria) {
             $('#id').val(categoria.id);
             $('#nombre').val(categoria.nombre);
             $('#descripcion').val(categoria.descripcion);
             $('.ui.modal').modal({transition: 'vertical flip'}).modal('show');
         }
+
+        $('#actualizar').on('click', () => {
+
+            var id = $('#id').val();
+            var nombre = $('#nombre').val();
+            var descripcion = $('#descripcion').val();
+
+            $.ajax({
+                url: "{{url('/service-categories')}}/" + id,
+                method: "POST",
+                data: {
+                    _method: "PATCH",
+                    nombre: nombre,
+                    descripcion: descripcion,
+                },
+                success: function (e) {
+                    if (e.success === 'Sin cambios') {
+                        iziToast.info({
+                            position: "topRight",
+                            title: 'Categoría',
+                            message: 'No ha realizado ningún cambio',
+                        });
+                    } else {
+                        iziToast.success({
+                            position: "topRight",
+                            title: 'Categoría',
+                            message: e.success,
+
+                        });
+                    }
+                    return window.location.href = '{{route("service-categories.index")}}'
+
+                }, error: function (e) {
+                    let errors = e.responseJSON.errors;
+                    for (let i = 0; i < Object.keys(errors).length; i++) {
+                        $('#' + Object.keys(errors)[i]).addClass('rojo');
+                    }
+                    iziToast.warning({
+                        icon: 'fa fa-exclamation-triangle',
+                        timeout: 1000,
+                        animateInside: true,
+                        position: 'topRight',
+                        message: [Object.values(errors)[0][0]],
+                    });
+                }
+            });
+            modal_lectura();
+        })
 
 
         $('#tablaCategorias tr').on('click', function () {
@@ -151,12 +201,58 @@
                 }
             });
         })
+        $('#borrar').on('click', function () {
+
+            const swalWithBootstrapButtons = Swal.mixin({
+                confirmButtonClass: 'btn btn-success swaButton',
+                cancelButtonClass: 'btn btn-danger swaButton',
+                buttonsStyling: false,
+            })
+
+            swalWithBootstrapButtons({
+                title: '¿Borrar categoría?',
+                type: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, eliminar!',
+                cancelButtonText: 'No, cancelar!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        url: "{{url('/service-categories')}}/" + categoriaId,
+                        method: "POST",
+                        data: {
+                            _method: "DELETE",
+                        },
+                        success: function () {
+                            iziToast.success({
+                                icon: 'icon-person',
+                                position: "topRight",
+                                message: " Categoría borrado correctamente",
+                            });
+
+                            setTimeout(() => {
+                                return window.location.href = '{{route("service-categories.index")}}'
+                            }, 500);
+                        }
+                    })
+                } else if (
+                    // Read more about handling dismissals
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    iziToast.error({
+                        icon: 'icon-person',
+                        position: "topRight",
+                        title: "Cancelado",
+                        message: " Categoría no borrada",
+                    });
+                }
+            })
+
+            /**/
+        })
 
         $(document).ready(function () {
-
-            $('#actualizar').on('click', ()=>{
-                modal_lectura();
-            })
 
             let y = window.innerHeight;
             var table = $('#tablaCategorias').DataTable({
@@ -177,7 +273,7 @@
                 column.visible(!column.visible());
             });
 
-            $('#nuevaCategoria').click(()=>{
+            $('#nuevaCategoria').click(() => {
                 return window.location.href = '{{route("service-categories.create")}}'
             })
         });

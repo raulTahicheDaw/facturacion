@@ -24,9 +24,15 @@
         font-size: medium;
     }
 
-    .editable{
+    .editable {
         border: 1px dotted green !important;
     }
+
+    .swaButton {
+        width: 120px !important;
+        margin: 0 20px;
+    }
+
 </style>
 @section('adminlte_css')
     <link rel="stylesheet"
@@ -187,7 +193,7 @@
 
         //Modal solo lectura
 
-        function modal_lectura(){
+        function modal_lectura() {
             $('#modal .ui.form input').attr('readonly', 'readonly');
             $('#modal .ui.form textarea').attr('readonly', 'readonly');
             $('.editable').attr('readonly', 'readonly');
@@ -199,6 +205,9 @@
 
         modal_lectura();
 
+        $('#actualizar').on('click', () => {
+            modal_lectura();
+        })
 
         //Modal editable
 

@@ -71,9 +71,33 @@ class RateController extends Controller
      * @param  \App\Rate  $rate
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Rate $rate)
+    public function update(TarifaRequest $request, Rate $rate)
     {
-        //
+        $data = $request->validate([
+            'nombre' => 'max:50',
+            'descripcion' => 'string|max:500',
+            'precio_hora' => "required|regex:/^\d*(\.\d{1,2})?$/",
+        ]);
+
+        if ($request->has('nombre')) {
+            $rate->nombre = $request->nombre;
+        }
+
+        if ($request->has('descripcion')) {
+            $rate->descripcion = $request->descripcion;
+        }
+        if ($request->has('precio_hora')) {
+            $rate->precio_hora = $request->precio_hora;
+        }
+
+
+        if ($rate->isClean()) {
+            return response()->json(['success' => 'Sin cambios']);
+        }
+
+        $rate->save();
+
+        return response()->json(['success' => 'Tarifa actualizada correctamente']);
     }
 
     /**
@@ -84,6 +108,7 @@ class RateController extends Controller
      */
     public function destroy(Rate $rate)
     {
-        //
+        $rate->delete();
+        return response()->json(['success' => 'Tarifa borrada correctamente']);
     }
 }

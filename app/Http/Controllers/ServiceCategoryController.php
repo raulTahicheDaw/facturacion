@@ -74,9 +74,28 @@ class ServiceCategoryController extends Controller
      * @param  \App\ServiceCategory $serviceCategory
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ServiceCategory $serviceCategory)
+    public function update(CategoriaRequest $request, ServiceCategory $serviceCategory)
     {
-        //
+        $data = $request->validate([
+            'nombre' => 'max:50',
+            'descripcion' => 'string|max:500',
+        ]);
+
+        if ($request->has('nombre')) {
+            $serviceCategory->nombre = $request->nombre;
+        }
+
+        if ($request->has('descripcion')) {
+            $serviceCategory->descripcion = $request->descripcion;
+        }
+
+        if ($serviceCategory->isClean()) {
+            return response()->json(['success' => 'Sin cambios']);
+        }
+
+        $serviceCategory->save();
+
+        return response()->json(['success' => 'Categoría actualizada correctamente']);
     }
 
     /**
@@ -87,6 +106,7 @@ class ServiceCategoryController extends Controller
      */
     public function destroy(ServiceCategory $serviceCategory)
     {
-        //
+        $serviceCategory->delete();
+        return response()->json(['success' => 'Servicio borrado correctamente']);
     }
 }

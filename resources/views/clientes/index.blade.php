@@ -16,7 +16,6 @@
             margin: 60px auto !important;
         }
 
-
     </style>
 @stop
 @section('title', 'AdminLTE')
@@ -277,6 +276,8 @@
 
         $("#clientes_tab .item").tab();
 
+        var clienteId;
+
         function abrirModal(cliente) {
             $('#id').val(cliente.id);
             $('#nombre').val(cliente.nombre);
@@ -358,6 +359,7 @@
                             title: 'Cliente',
                             message: e.success,
                         });
+
                     }
                 }, error: function (e) {
                     let errors = e.responseJSON.errors;
@@ -388,11 +390,58 @@
             });
         })
 
-        $(document).ready(function () {
+        $('#borrar').on('click', function () {
 
-            $('#actualizar').on('click', () => {
-                modal_lectura();
+            const swalWithBootstrapButtons = Swal.mixin({
+                confirmButtonClass: 'btn btn-success swaButton',
+                cancelButtonClass: 'btn btn-danger swaButton',
+                buttonsStyling: false,
             })
+
+            swalWithBootstrapButtons({
+                title: '¿Borrar cliente?',
+                type: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, eliminar!',
+                cancelButtonText: 'No, cancelar!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        url: "{{url('/clients')}}/" + clienteId,
+                        method: "POST",
+                        data: {
+                            _method: "DELETE",
+                        },
+                        success: function () {
+                            iziToast.success({
+                                icon: 'icon-person',
+                                position: "topRight",
+                                message: " Cliente borrado correctamente",
+                            });
+
+                            setTimeout(() => {
+                                return window.location.href = '{{route("clients.index")}}'
+                            }, 500);
+                        }
+                    })
+                } else if (
+                    // Read more about handling dismissals
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    iziToast.error({
+                        icon: 'icon-person',
+                        position: "topRight",
+                        title: "Cancelado",
+                        message: " Cliente no borrado",
+                    });
+                }
+            })
+
+            /**/
+        })
+
+        $(document).ready(function () {
 
             let y = window.innerHeight;
             var table = $('#tablaClientes').DataTable({

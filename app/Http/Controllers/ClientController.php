@@ -160,6 +160,7 @@ class ClientController extends Controller
      *
      * @param  \App\Client $client
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public
     function destroy(Client $client)

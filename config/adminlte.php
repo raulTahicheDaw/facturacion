@@ -131,6 +131,10 @@ return [
                     'text' => 'Tarifas',
                     'icon' => 'eur',
                     'url' => 'rates'
+                ],[
+                    'text' => 'Impuestos',
+                    'icon' => 'institution',
+                    'url' => 'taxes'
                 ],
             ]
         ]
